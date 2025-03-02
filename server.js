@@ -7,6 +7,10 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.get('/', (req, res) => {
+    res.send('Weather API is working!'); 
+});
+
 app.get('/weather', async (req, res) => {
     const { lat, lon } = req.query;
     if (!lat || !lon) {
