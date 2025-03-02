@@ -23,8 +23,13 @@ app.get('/weather', async (req, res) => {
         return res.status(400).json({ error: 'Latitude and Longitude are required' });
     }
 
+    const apiKey = process.env.OPENWEATHER_API_KEY;
+    if (!apiKey) {
+        console.error('API Key is missing!');
+        return res.status(500).json({ error: 'API key is missing' });
+    }
+
     try {
-        const apiKey = process.env.OPENWEATHER_API_KEY;
         const weatherResponse = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
             params: {
                 lat,
@@ -43,19 +48,23 @@ app.get('/weather', async (req, res) => {
             }
         });
 
-        if (!weatherResponse.data || !forecastResponse.data) {
+        if (weatherResponse.data && forecastResponse.data) {
+            console.log('Weather Response:', weatherResponse.data);
+            console.log('Forecast Response:', forecastResponse.data);
+
+            res.json({
+                ...weatherResponse.data,
+                forecast: forecastResponse.data.list
+            });
+        } else {
             throw new Error('Invalid response from OpenWeather API');
         }
-
-        res.json({
-            ...weatherResponse.data,
-            forecast: forecastResponse.data.list
-        });
     } catch (error) {
         console.error('Error fetching data from OpenWeather:', error);
         res.status(500).json({ error: 'Failed to fetch weather data' });
     }
 });
+
 
 
 app.listen(port, () => {
