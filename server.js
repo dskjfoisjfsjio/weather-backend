@@ -43,6 +43,10 @@ app.get('/weather', async (req, res) => {
             }
         });
 
+        if (!weatherResponse.data || !forecastResponse.data) {
+            throw new Error('Invalid response from OpenWeather API');
+        }
+
         res.json({
             ...weatherResponse.data,
             forecast: forecastResponse.data.list
@@ -52,6 +56,7 @@ app.get('/weather', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch weather data' });
     }
 });
+
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
