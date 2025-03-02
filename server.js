@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 
 
 app.use(cors({
-    origin: 'https://admirable-kulfi-a4cfba.netlify.app',  
+    origin: 'https://alexrweather.netlify.app',  
 }));
 
 app.get('/', (req, res) => {
