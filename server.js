@@ -1,14 +1,20 @@
 const express = require('express');
 const axios = require('axios');
 const dotenv = require('dotenv');
+const cors = require('cors');  
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+
+app.use(cors({
+    origin: 'https://admirable-kulfi-a4cfba.netlify.app',  
+}));
+
 app.get('/', (req, res) => {
-    res.send('Weather API is working!'); 
+    res.send('Weather API is working!');
 });
 
 app.get('/weather', async (req, res) => {
